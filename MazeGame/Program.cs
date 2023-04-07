@@ -2,9 +2,15 @@
 
 namespace MazeGame
 {
-
     class Program : GameLoop
     {
+        private enum Direction
+        {
+            up,
+            down,
+            left,
+            right,
+        }
 
         private static int width = 30;
         private static int height = 15;
@@ -190,9 +196,39 @@ namespace MazeGame
         {
             return playerX == destinationX && playerY == destinationY;
         }
-        private void Move()
+        private void Move(Direction direction)
         {
+            switch (direction)
+            {
+                case Direction.up:
+                    if (playerY != 0)
+                    {
+                        playerY--;
+                    }
+                    break;
 
+                case Direction.down:
+                    if (playerY != height - 1)
+                    {
+                        playerY++;
+                    }
+                    break;
+
+                case Direction.left:
+                    if (playerX != 0)
+                    {
+                        playerX--;
+                    }
+                    break;
+
+                case Direction.right:
+                    if (playerX != width - 1)
+                    {
+                        playerX++;
+                    }
+                    break;
+
+            }
         }
         private void CheckInput()
         {
@@ -200,36 +236,22 @@ namespace MazeGame
 
             switch (keyInfo.Key)
             {
-                case ConsoleKey.LeftArrow:
-                    if(playerX != 0)
-                    {
-                        playerX--;
-                    }
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    
-                    if (playerX != width - 1)
-                    {
-                        playerX++;
-                    }
-                    break;
-
                 case ConsoleKey.UpArrow:
-                    
-                    if (playerY != 0)
-                    {
-                        playerY--;
-                    }
+                    Move(Direction.up);
                     break;
 
                 case ConsoleKey.DownArrow:
-                    
-                    if (playerY != height - 1)
-                    {
-                        playerY++;
-                    }
+                    Move(Direction.down);
                     break;
+
+                case ConsoleKey.LeftArrow:
+                    Move(Direction.left);
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    Move(Direction.right);
+                    break;
+
             }
         }
         
