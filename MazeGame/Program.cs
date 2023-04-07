@@ -37,8 +37,7 @@ namespace MazeGame
 
         protected override void Start()
         {
-            Console.WindowWidth = width;
-            Console.WindowHeight = height;
+            SetResolution(width, height);
 
             GenerateMaze();
 
@@ -49,7 +48,6 @@ namespace MazeGame
         }
         protected override void Update()
         {
-            base.Update();
             CheckInput();
             CheckPlayerStatus();
         }
@@ -63,31 +61,49 @@ namespace MazeGame
             if (!alive)
             {
                 Console.Clear();
-                Console.WindowWidth = 60;
-                Console.WindowHeight = 20;
 
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
+                SetResolution(60, 20);
 
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Kikril has beaten your ass");
-
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 + 1);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("You died");
-                Console.ForegroundColor = ConsoleColor.Black;
+                DrawDeathScreen();
             }
             else if (passed)
             {
                 Console.Clear();
-                Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2);
 
-                Console.WindowWidth = 60;
-                Console.WindowHeight = 20;
-
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("You escaped Kikril homeworks");
-                Console.ForegroundColor = ConsoleColor.Black;
+                SetResolution(60, 20);
+                DrawPassScreen();
             }
+        }
+
+        private void WriteInColor(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+        }
+        private void DrawDeathScreen()
+        {
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
+
+            WriteInColor("Kikril has beaten your ass", ConsoleColor.DarkCyan);
+
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 + 1);
+
+            WriteInColor("You died", ConsoleColor.Red);
+
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        private void DrawPassScreen()
+        {
+            Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
+
+            WriteInColor("You escaped Kikril homeworks", ConsoleColor.DarkCyan);
+
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        private void SetResolution(int _width, int _height)
+        {
+            Console.WindowHeight = _height;
+            Console.WindowWidth = _width;
         }
         private void GenerateMaze()
         {
@@ -147,22 +163,6 @@ namespace MazeGame
                 }
             }
         }
-
-/*        public (int, int) GenerateDestination()
-        {
-            while (true)
-            {
-                int destinationX = random.Next(0, width - 1);
-                int destinationY = random.Next(0, height - 1);
-
-                if (characters[destinationX, destinationY] == ' ')
-                {
-                    return (destinationX, destinationY);
-                }
-            }
-        }
-
-        (int destinationX, int destinationY) = GenerateDestination();*/
         private void DrawDestination(char symbol)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -191,14 +191,9 @@ namespace MazeGame
                 alive = false;
             }
         }
-        private bool PlayerDead()
-        {
-             return characters[playerX, playerY] == true;
-        }
-        private bool PlayerPassed()
-        {
-            return playerX == destinationX && playerY == destinationY;
-        }
+        private bool PlayerDead() => characters[playerX, playerY] == true;
+        private bool PlayerPassed() => playerX == destinationX && playerY == destinationY;
+
         private void Move(Direction direction)
         {
             switch (direction)
