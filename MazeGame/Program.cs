@@ -23,7 +23,7 @@ namespace MazeGame
         private int playerX = width / 2;
         private int playerY = height /2;
 
-        private char[,] characters = new char[width, height];
+        private bool[,] characters = new bool[width, height];
 
         private Random random = new Random();
 
@@ -97,19 +97,16 @@ namespace MazeGame
                 {
                     int chance = random.Next(0, 100);
 
-                    char character;
-
                     if (chance <= obsticleFreq)
                     {
-                        character = obsticleChar;
-                        characters[i, j] = character;
+                        characters[i, j] = true;
                     }
                     else
                     {
-                        character = backgroundChar;
+                        characters[i, j] = false;
                     }
 
-                    characters[i, j] = character;
+                    
                 }
             }
         }
@@ -121,8 +118,14 @@ namespace MazeGame
                 for (int j = 0; j < height; j++)
                 {
                     Console.SetCursorPosition(i, j);
-
-                    Console.Write(characters[i, j]);
+                    if(characters[i, j])
+                    {
+                        Console.Write(obsticleChar);
+                    }
+                    else
+                    {
+                        Console.Write(backgroundChar);
+                    }
                 }
             }
         }
@@ -136,7 +139,7 @@ namespace MazeGame
                 int randomX = random.Next(0, width);
                 int randomY = random.Next(0, height);
 
-                if (characters[randomX, randomY] == backgroundChar)
+                if (characters[randomX, randomY] == false)
                 {
                     x = randomX;
                     y = randomY;
@@ -190,7 +193,7 @@ namespace MazeGame
         }
         private bool PlayerDead()
         {
-             return characters[playerX, playerY] == obsticleChar;
+             return characters[playerX, playerY] == true;
         }
         private bool PlayerPassed()
         {
