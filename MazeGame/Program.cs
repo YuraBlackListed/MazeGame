@@ -1,90 +1,10 @@
 ﻿using System;
-using System.Threading;
 
 namespace MazeGame
 {
-    class Game
+
+    class Program : GameLoop
     {
-        Program program = new Program();
-
-        bool running = true;
-
-        void Start()
-        {
-            program.Start();
-        }
-
-        void Update()
-        {
-            program.CheckInput();
-            program.CheckPlayerStatus();
-        }
-
-        void Render()
-        {
-
-            Thread.Sleep(100);
-            Console.Clear();
-            program.DrawMaze();
-            program.DrawPlayer(program.playerChar);
-            program.DrawDestination(program.destinationChar);
-            
-            //Eye pain warning!!
-            if(!program.alive)
-            {
-                Console.Clear();
-                Console.WindowWidth = 70;
-                Console.WindowHeight = 30;
-
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
-
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Kikril has beaten your ass");
-
-                Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 + 1);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("You died");
-                Console.ForegroundColor = ConsoleColor.Black;
-                Stop();
-            }
-            else if(program.passed)
-            {
-                Console.Clear();
-                Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2);
-
-                Console.WindowWidth = 70;
-                Console.WindowHeight = 30;
-
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("You escaped Kikril homeworks");
-                Console.ForegroundColor = ConsoleColor.Black;
-                Stop();
-            }
-        }
-
-        void Stop()
-        {
-            running = false;
-        }
-
-        public void Run()
-        {
-            Start();
-            while (running)
-            {
-                Update();
-                Render();
-            }
-        }
-    }
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Game game = new Game();
-            game.Run();
-        }
 
         private static int width = 30;
         private static int height = 15;
@@ -109,7 +29,7 @@ namespace MazeGame
         public bool alive = true;
         public bool passed = false;
 
-        public void Start()
+        protected override void Start()
         {
             Console.WindowWidth = width;
             Console.WindowHeight = height;
@@ -119,8 +39,50 @@ namespace MazeGame
             GenerateLocation(out destinationX, out destinationY);
 
             GenerateLocation(out playerX, out playerY);
+
+        }
+        public override void Update()
+        {
+            base.Update();
+            CheckInput();
+            CheckPlayerStatus();
         }
 
+        protected override void Render()
+        {
+            DrawMaze();
+            DrawPlayer(playerChar);
+            DrawDestination(destinationChar);
+
+            if (!alive)
+            {
+                Console.Clear();
+                Console.WindowWidth = 60;
+                Console.WindowHeight = 20;
+
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 10, Console.WindowHeight / 2);
+
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("Kikril has beaten your ass");
+
+                Console.SetCursorPosition(Console.WindowWidth / 2 - 2, Console.WindowHeight / 2 + 1);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("You died");
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+            else if (passed)
+            {
+                Console.Clear();
+                Console.SetCursorPosition(Console.WindowWidth / 2, Console.WindowHeight / 2);
+
+                Console.WindowWidth = 60;
+                Console.WindowHeight = 20;
+
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("You escaped Kikril homeworks");
+                Console.ForegroundColor = ConsoleColor.Black;
+            }
+        }
         private void GenerateMaze()
         {
             for(int i = 0; i < width; i++)
