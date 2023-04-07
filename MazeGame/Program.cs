@@ -21,13 +21,13 @@ namespace MazeGame
 
         private Random random = new Random();
 
-        public char playerChar = 'O';
-        public char obsticleChar = '=';
-        public char backgroundChar = ' ';
-        public char destinationChar = 'B';
+        private char playerChar = 'O';
+        private char obsticleChar = '=';
+        private char backgroundChar = ' ';
+        private char destinationChar = 'B';
 
-        public bool alive = true;
-        public bool passed = false;
+        private bool alive = true;
+        private bool passed = false;
 
         protected override void Start()
         {
@@ -41,7 +41,7 @@ namespace MazeGame
             GenerateLocation(out playerX, out playerY);
 
         }
-        public override void Update()
+        protected override void Update()
         {
             base.Update();
             CheckInput();
@@ -107,7 +107,7 @@ namespace MazeGame
                 }
             }
         }
-        public void DrawMaze()
+        private void DrawMaze()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             for (int i = 0; i < width; i++)
@@ -154,7 +154,7 @@ namespace MazeGame
         }
 
         (int destinationX, int destinationY) = GenerateDestination();*/
-        public void DrawDestination(char symbol)
+        private void DrawDestination(char symbol)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
 
@@ -162,7 +162,7 @@ namespace MazeGame
 
             Console.Write(symbol);
         }
-        public void DrawPlayer(char symbol)
+        private void DrawPlayer(char symbol)
         {
             Console.ForegroundColor = ConsoleColor.Green;
 
@@ -171,7 +171,7 @@ namespace MazeGame
             Console.Write(symbol);
         }
 
-        public void CheckPlayerStatus()
+        private void CheckPlayerStatus()
         {
             if(PlayerPassed())
             {
@@ -190,8 +190,11 @@ namespace MazeGame
         {
             return playerX == destinationX && playerY == destinationY;
         }
+        private void Move()
+        {
 
-        public void CheckInput()
+        }
+        private void CheckInput()
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
@@ -229,5 +232,6 @@ namespace MazeGame
                     break;
             }
         }
+        
     }
 }
