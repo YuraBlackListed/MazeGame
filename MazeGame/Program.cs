@@ -249,7 +249,6 @@ namespace MazeGame
                 case ConsoleKey.RightArrow:
                     Move(Direction.right);
                     break;
-
             }
         }
         

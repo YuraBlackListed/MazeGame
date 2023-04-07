@@ -31,9 +31,7 @@ namespace MazeGame
         protected virtual void Render()
         {
 
-            Thread.Sleep(100);
-            //Eye pain warning!!
-            
+            Thread.Sleep(10);
         }
 
         void Stop()
