@@ -184,19 +184,11 @@ namespace MazeGame
         }
         private bool PlayerDead()
         {
-            if(characters[playerX, playerY] == obsticleChar)
-            {
-                return true;
-            }
-            return false;
+             return characters[playerX, playerY] == obsticleChar;
         }
         private bool PlayerPassed()
         {
-            if (playerX == destinationX && playerY == destinationY)
-            {
-                return true;
-            }
-            return false;
+            return playerX == destinationX && playerY == destinationY;
         }
 
         public void CheckInput()
